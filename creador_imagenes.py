@@ -27,7 +27,6 @@ for file in glob.glob(preName + '*.xy'):
 fileFrames.sort()
 
 contador=1
-alturaSilo = 7.0
 
 for f in fileFrames:
 	fin = open(f,'r')
@@ -70,7 +69,7 @@ for f in fileFrames:
 			
 			ini=ini+1
 		elif l[0] == "caja":
-		
+			alturaSilo=float(l[2])
 			verts.append([-(12.25/2), float(l[1])])
 			verts.append([-(12.25/2), float(l[1])+alturaSilo+1])
 			verts.append([(12.25/2), float(l[1])+alturaSilo+1])
@@ -79,15 +78,11 @@ for f in fileFrames:
 			
 		elif l[0] == "Ob":
 			
-			radio = 0.75
-			
-			patches.append(Circle((float(l[2]),float(l[3])),radio, fill = True))
+			patches.append(Circle((float(l[2]),float(l[3])),float(l[4]), fill = True))
 			
 		else:
-			
-			radio = 0.25
 
-			patches.append(Circle((float(l[1]),float(l[2])), radio, fill=True))
+			patches.append(Circle((float(l[1]),float(l[2])), float(l[3]), fill=True))
 		
 
 		

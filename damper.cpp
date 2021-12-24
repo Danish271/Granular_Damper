@@ -26,7 +26,7 @@ int main(){
 //instanciamos la configuracion
 
 	GlobalSetup conf;
-	conf.load("params.ini");
+	//conf.load("params.ini");
 	Contenedor caja;
 	tipoGrano conf_gran;
 	obstaculos ob1;
@@ -70,6 +70,7 @@ int main(){
 	bodyGrainData cajaInfo;
 	cajaInfo.isGrain = false;
 	cajaInfo.nLados = 4;
+	cajaInfo.radio = caja.altura;
 	caja_def.userData.pointer = uintptr_t(&cajaInfo);
 	
 	b2Body* caja_body = world.CreateBody(&caja_def);
@@ -204,6 +205,8 @@ int main(){
 
 		gInfo[i].isGrain = true;
 		gInfo[i].nLados = conf_gran.nLados;
+		gInfo[i].radio = conf_gran.radio;
+		
 		if (i == 0) y += 2.0 * conf_gran.radio;
 		for (int j = 0; j < conf_gran.noGranos; j++) { // Loop sobre el número de granos de cada tipo.
 // 			x = RandomFloat(cajaIzq,cajaDer);
@@ -335,11 +338,10 @@ void saveFrame(std::ofstream *ff, b2World *w, const float* t, const int* nTG,con
 	ymin = 1E8; ymax = -1E8; MT = 0.0; suma = 0.0;
 	int n = 0;
 	int idg = 1;
-	*(ff) << fixed << setw(8) << "# tiempo = "<< *t << " (id del grano - pos x - pos y)" << endl;
+	*(ff) << fixed << setw(8) << "# tiempo = "<< *t << " (id del grano - pos x - pos y - radio)" << endl;
 	for (b2Body* bd = w->GetBodyList(); n < *nTG + 1; bd = bd->GetNext()) {
 
 		bodyGrainData* infGr = (bodyGrainData*) (bd->GetUserData()).pointer;	
-		
 		if (infGr->isGrain) {
 			y = bd->GetPosition().y;
 			x = bd->GetPosition().x;
@@ -348,6 +350,7 @@ void saveFrame(std::ofstream *ff, b2World *w, const float* t, const int* nTG,con
 			*(ff) << fixed << "G"<< idg << " ";
 			*(ff) << fixed << setw(8) << x << " ";
 			*(ff) << fixed << setw(8) << y << " ";
+			*(ff) << fixed << setw(8) << infGr->radio << " ";
 			*(ff) << endl;
 			idg=idg+1;
 		}
@@ -364,15 +367,15 @@ void saveFrame(std::ofstream *ff, b2World *w, const float* t, const int* nTG,con
 					
 					bodyFixtureData* infobs = (bodyFixtureData*) (obsfix->GetUserData()).pointer;	
 					if(infobs->isObstacle == true){
-						
-						*(ff) << "Ob" << " " << idb << " " << infobs->obx << " " << infobs->oby + ycaja <<endl;
+						b2Shape* shapeobs = obsfix->GetShape();
+						*(ff) << "Ob" << " " << idb << " " << infobs->obx << " " << infobs->oby + ycaja << " " << shapeobs->m_radius << endl;
 						idb = idb + 1;
 					
 					};
 					n1++;
 				};
 
-				*(ff) << fixed << "caja " << ycaja << " " << endl;
+				*(ff) << fixed << "caja " << ycaja << " " << infGr->radio << endl;
 			}
 		}
 		n++;
