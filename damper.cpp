@@ -26,9 +26,9 @@ int main(){
 //instanciamos la configuracion
 
 	GlobalSetup conf;
-	//conf.load("params.ini");
-	Contenedor caja;
-	tipoGrano conf_gran;
+	conf.load("params.ini");
+	Contenedor caja = conf.caja;
+	
 	obstaculos ob1;
 	
 //creamos el mundo
@@ -204,36 +204,36 @@ int main(){
 	for (int i = 0; i < conf.noTipoGranos; i++) { // Loop sobre tipos de granos.
 
 		gInfo[i].isGrain = true;
-		gInfo[i].nLados = conf_gran.nLados;
-		gInfo[i].radio = conf_gran.radio;
+		gInfo[i].nLados = conf.granos[i]->nLados;
+		gInfo[i].radio = conf.granos[i]->radio;
 		
-		if (i == 0) y += 2.0 * conf_gran.radio;
-		for (int j = 0; j < conf_gran.noGranos; j++) { // Loop sobre el número de granos de cada tipo.
+		if (i == 0) y += 2.0 * conf.granos[i]->radio;
+		for (int j = 0; j < conf.granos[i]->noGranos; j++) { // Loop sobre el número de granos de cada tipo.
 // 			x = RandomFloat(cajaIzq,cajaDer);
 // 			y = RandomFloat(cajaInf,cajaSup)+globalSetup->ZeroSet;
-			x += 2.1* conf_gran.radio;
-			if (x > 0.5f * (caja.ancho - caja.AnPar)-conf_gran.radio) {
-				x = 0.5f*(-caja.ancho+caja.AnPar) + conf_gran.radio;
-				y += 2.1 * conf_gran.radio;
+			x += 2.1* conf.granos[i]->radio;
+			if (x > 0.5f * (caja.ancho - caja.AnPar)-conf.granos[i]->radio) {
+				x = 0.5f*(-caja.ancho+caja.AnPar) + conf.granos[i]->radio;
+				y += 2.1 * conf.granos[i]->radio;
 			};
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position.Set(x,y);
 			bd.angle = 0.0;
 			
-			bd.userData.pointer = uintptr_t(&gInfo);
+			bd.userData.pointer = uintptr_t(&gInfo[i]);
 			
 			b2Body* grain = world.CreateBody(&bd);
 			
-			if (conf_gran.nLados == 1) {
+			if (conf.granos[i]->nLados == 1) {
 			
 				b2CircleShape circle;
-				circle.m_radius = conf_gran.radio;
+				circle.m_radius = conf.granos[i]->radio;
 				b2FixtureDef fixDef;
 				fixDef.shape = &circle;
-				fixDef.density = conf_gran.dens;
-				fixDef.friction = conf_gran.rozam;
-				fixDef.restitution = conf_gran.rest;
+				fixDef.density = conf.granos[i]->dens;
+				fixDef.friction = conf.granos[i]->rozam;
+				fixDef.restitution = conf.granos[i]->rest;
 				
 				bodyFixtureData FixtureData;
 				FixtureData.isObstacle = false;
@@ -247,16 +247,16 @@ int main(){
 			}
 			else {
 				b2PolygonShape poly;
-				int vertexCount = conf_gran.nLados;
+				int vertexCount = conf.granos[i]->nLados;
 				b2Vec2 vertices[8];
-				for (int k = 0; k < conf_gran.nLados; k++) 
-					vertices[k].Set(conf_gran.vertices[k][0],conf_gran.vertices[k][1]);
+				for (int k = 0; k < conf.granos[i]->nLados; k++) 
+					vertices[k].Set(conf.granos[i]->vertices[k][0],conf.granos[i]->vertices[k][1]);
 				poly.Set(vertices,vertexCount);
 				b2FixtureDef fixDef;
 				fixDef.shape = &poly;
-				fixDef.density = conf_gran.dens;
-				fixDef.friction = conf_gran.rozam;
-				fixDef.restitution = conf_gran.rest;
+				fixDef.density = conf.granos[i]->dens;
+				fixDef.friction = conf.granos[i]->rozam;
+				fixDef.restitution = conf.granos[i]->rest;
 				b2Fixture* gfixture = grain->CreateFixture(&fixDef);
 				mg += grain->GetMass();
 				

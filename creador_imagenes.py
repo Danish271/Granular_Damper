@@ -56,7 +56,7 @@ for f in fileFrames:
 				ax1.add_collection(p)
 		
 				pylab.xlim([1.5 * -(12.25/2), 1.5 * (12.25/2)])
-				pylab.ylim([ - 1.5 * alturaSilo, 3.5 * alturaSilo])
+				pylab.ylim([ - 1.5 * alturaSilo, 2.0 * alturaSilo])
 				pylab.savefig(fout)
 				pylab.cla()
 				pylab.clf()
@@ -74,7 +74,7 @@ for f in fileFrames:
 			verts.append([-(12.25/2), float(l[1])+alturaSilo+1])
 			verts.append([(12.25/2), float(l[1])+alturaSilo+1])
 			verts.append([(12.25/2), float(l[1])])
-			patches.append(Polygon(verts, closed=True))
+			patches.append(Polygon(verts, closed=True, facecolor=None))
 			
 		elif l[0] == "Ob":
 			
