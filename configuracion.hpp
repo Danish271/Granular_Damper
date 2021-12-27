@@ -69,7 +69,6 @@ struct bodyGrainData {
 	bool isGrain;	/*!< Variable lógica que identifica granos */
 	int nLados;	/*!< Número de lados que tiene el grano */
 	float radio;
-	
 };
 
 struct bodyFixtureData {
@@ -112,25 +111,13 @@ public:
 	double ZeroSet = 5.0; /*!< Posición vertical de la caja en la que la fuerza del resorte es nula */
 //	string inputFile; /*!< Nombre del archivo con parámetros de control */
 	string preOutFile = "tray"; /*!< Prefijo del nombre del archivo de salida de trayectoria */
-	string outFileExt = "xy"; /*!< Extensión del archivo de salida de trayectoria */
+	string outFileExt; /*!< Extensión del archivo de salida de trayectoria */
 	double tMinReg = 3.0; /*!< Tiempo a partir del cual se registra la trayectoria */
 	int regStep = 30 ; /*!< Paso de registro de trayectoria */
 	double fStart = 5.0; /*!< Frecuencia inicial de vibración */
 	double fEnd = 5.0; /*!< Frecuencia final de vibración */
 	double fStep = 0.4; /*!< Paso en las frecuencias de vibración */
-	
-	void load(string inputFile){
-		ifstream fin(inputFile.c_str());
-		string ident;
-		
-		while (!fin.eof()) {
-		
-			fin >> ident;
-			if (ident == "outFileExt:") {
-				fin >> outFileExt;
-			}
-		}
-	};
+	void load(string);	
 };
 
 #endif
