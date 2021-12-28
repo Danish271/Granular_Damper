@@ -28,6 +28,10 @@ fileFrames.sort()
 
 contador=1
 
+patches = []
+obstaculo = []
+granos = []
+
 for f in fileFrames:
 	fin = open(f,'r')
 	data = fin.readlines()
@@ -37,6 +41,9 @@ for f in fileFrames:
 	
 	with open(f) as myfile:
 		total_lines = sum(1 for line in myfile)
+	
+	
+	
 	
 	ini = 0
 	for linea in data:
@@ -49,14 +56,18 @@ for f in fileFrames:
 			
 			if ini != 0:
 				
-				cmap = plt.get_cmap('Set1')
-				p = PatchCollection(patches, alpha=0.9)
+				#cmap = plt.get_cmap('Set1')
+				p = PatchCollection(patches, color = "white", edgecolor="black",alpha=0.9)
+				pob = PatchCollection(obstaculo, color = "black" ,alpha=0.95)
+				pgr = PatchCollection(granos, alpha=0.8)
 				pylab.axes().set_aspect('equal')
 				ax1 = pylab.gca()
 				ax1.add_collection(p)
+				ax1.add_collection(pob)
+				ax1.add_collection(pgr)
 		
 				pylab.xlim([1.5 * -(12.25/2), 1.5 * (12.25/2)])
-				pylab.ylim([ - 1.5 * alturaSilo, 2.0 * alturaSilo])
+				pylab.ylim([ - 0.5 * alturaSilo, 2.0 * alturaSilo])
 				pylab.savefig(fout)
 				pylab.cla()
 				pylab.clf()
@@ -66,7 +77,8 @@ for f in fileFrames:
 			fout = preName + '{:06d}.png'.format(ini)
 			verts = []
 			patches = []
-			
+			obstaculo = []
+			granos = []
 			ini=ini+1
 		elif l[0] == "caja":
 			alturaSilo=float(l[2])
@@ -74,15 +86,15 @@ for f in fileFrames:
 			verts.append([-(12.25/2), float(l[1])+alturaSilo+1])
 			verts.append([(12.25/2), float(l[1])+alturaSilo+1])
 			verts.append([(12.25/2), float(l[1])])
-			patches.append(Polygon(verts, closed=True, facecolor=None))
+			patches.append(Polygon(verts, closed=True))
 			
 		elif l[0] == "Ob":
 			
-			patches.append(Circle((float(l[2]),float(l[3])),float(l[4]), fill = True))
+			obstaculo.append(Circle((float(l[2]),float(l[3])),float(l[4]), fill = True))
 			
 		else:
 
-			patches.append(Circle((float(l[1]),float(l[2])), float(l[3]), fill=True))
+			granos.append(Circle((float(l[1]),float(l[2])), float(l[3]), fill=True))
 		
 
 		
@@ -91,4 +103,3 @@ for f in fileFrames:
 		if contador == total_lines-1:
 			contador=0
 			break
-
