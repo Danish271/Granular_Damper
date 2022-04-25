@@ -3,6 +3,29 @@
 #ifndef _CONFIGURACION_H
 #define _CONFIGURACION_H
 
+
+// includes para THD-----------
+#include <stdio.h>
+#include <gsl/gsl_fft_real.h>
+#include <gsl/gsl_fft_halfcomplex.h>
+#include <fstream>
+using std::ifstream;
+#include <string>
+using std::string;
+#include <iostream>
+#include <cmath>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_fft_complex.h>
+#include <numeric>
+
+#define REAL(z,i) ((z)[2*(i)])
+#define IMAG(z,i) ((z)[2*(i)+1])
+//------------------------
+
+#include<string>
+#include "random.hpp"
+
+#include "include/box2d/box2d.h"
 #include <cstdlib>
 using std::exit;
 #include <iostream>
@@ -17,6 +40,7 @@ using std::string;
 using std::vector;
 #include <cmath>
 using std::sin; using std::cos;
+
 
 
 struct Contenedor {
@@ -83,7 +107,7 @@ struct bodyFixtureData {
 /** \class GlobalSetup
  * Clase que contiene toda la información necesaria para realizar una simulación
  * */
-class GlobalSetup {
+class GlobalSetup{
 public:
 
 	// Parámetros de objetos del modelo
@@ -91,9 +115,9 @@ public:
 	int noTipoGranos; /*!< Cantidad de tipos de granos distintos en la simulación */
 	tipoGrano **granos; /*!< Array que contiene los distintos tipos de granos */
 
-	//cantidad de obstaculos
+	//cantidad de obstaculos cambiar a lectura por params.ini
 		
-	int obn = 1;
+	int obn = 5;
 
 	// Parámetros de control de la simulación
 	double tStep; /*!< Paso temporal de integración */
@@ -116,7 +140,26 @@ public:
 	double fStart; /*!< Frecuencia inicial de vibración */
 	double fEnd; /*!< Frecuencia final de vibración */
 	double fStep; /*!< Paso en las frecuencias de vibración */
-	void load(string);	
+	void load(string);
+
+	 //numero de obstaculos
+	
+};
+
+double THD(float cromosoma[10],bool guardar);
+
+int* fitness(float poblacion[][10], int n_ind,int ranking[]);
+
+float* init_population(int n_obs,int n_ind,float poblacion[][10]);
+
+float* reproduccion(float ind1[],float ind2[],float new_ind[]);
+
+void saveFrame(std::ofstream *ff, b2World *w, const float* t, const int* nTG,const int* nTO);
+template <typename T>
+string NumberToString ( T Number ){
+	std::ostringstream ss;
+	ss << Number;
+	return ss.str();
 };
 
 #endif
