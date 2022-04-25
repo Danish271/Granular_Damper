@@ -9,10 +9,10 @@
 CXX = g++
 BOX2D = /home/erik/Documentos/ProyectoBox2d/
 LIBPATH = -L$(BOX2D)/lib
-INCLUDES = -I$(BOX2D)/include
-LIBS = -lbox2d -lm
+INCLUDES = -I$(BOX2D)/include -Iusr/local/include -Iusr/local/lib
+LIBS = -lbox2d -lm -lgsl
 CXXFLAGS = -O3 $(INCLUDES)
-LDFLAGS = -O3 -Wall $(LIBPATH) -static $(LIBS)
+LDFLAGS = -O3 -Wall $(LIBPATH) -static $(LIBS) -fexceptions
 
 OBJS = damper.o configuracion.o 
 

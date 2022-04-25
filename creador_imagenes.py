@@ -17,8 +17,8 @@ parser = argparse.ArgumentParser(description='Programa para graficar frames.')
 parser.add_argument('-f','--pfile',help='Input data prefix file', required=True, action="store")
 
 args =  parser.parse_args()
-preName = args.pfile + '_'
-
+#preName = args.pfile + '_'
+preName = args.pfile
 fileFrames = []
 # os.chdir('.')
 for file in glob.glob(preName + '*.xy'):

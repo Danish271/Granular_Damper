@@ -24,4 +24,5 @@ then
     exit 1
 fi
 
-ffmpeg -i $1_%6d.png -c:v libx264 -r $3 -pix_fmt yuv420p $2.mp4
+#ffmpeg -i $1_%6d.png -c:v libx264 -r $3 -pix_fmt yuv420p $2.mp4
+ffmpeg -i $1%6d.png -c:v libx264 -r $3 -pix_fmt yuv420p $2.mp4
