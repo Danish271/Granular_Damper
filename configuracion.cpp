@@ -637,22 +637,29 @@ float* reproduccion(float ind1[],float ind2[],float new_ind[]){
 };
 	
 int* fitness(float poblacion[][10], int n_ind,int ranking[]){
-	cout << "Simulando población..." <<endl;
+	//cout << "Simulando población..." <<endl;
 	float THDPoblacion[n_ind];
+	int repetidos = 0;
 	for(int i=0;i<n_ind;i++){
 		THDPoblacion[i] = THD(poblacion[i],false);
 	};
 	
 	for(int i=0;i<n_ind;i++){
 		int contador = 0;
+		int repetidos = 0;
 		for (int j=0;j<n_ind;j++){
-			if(THDPoblacion[i]>=THDPoblacion[j] and i != j){
+			if(THDPoblacion[i]>THDPoblacion[j] and i != j){
 				contador = contador + 1;
-			}
+			};
+			if(THDPoblacion[i] == THDPoblacion[j] and i > j){
+				repetidos = repetidos + 1;
+			};
 		};
-		ranking[i]=contador+1;
+				
+		ranking[i]=contador+repetidos+1;
+		
 	};	
-	cout << "simulación terminada" <<endl;
+	//cout << "simulación terminada" <<endl;
 	return ranking;
 };
 
